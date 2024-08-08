@@ -1,5 +1,7 @@
 import os
 import base64
+import json
+import time
 import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image
@@ -48,7 +50,7 @@ def save_image(uploaded_image):
         file_details = {"FileName":uploaded_image.name,"FileType":uploaded_image.type}
         st.write(file_details['FileName'])
         img = load_image(uploaded_image)
-        st.image(img, use_column_width=True)
+        st.image(img, use_column_width='auto')
         with open(os.path.join("tempDir",uploaded_image.name),"wb") as f: 
             f.write(uploaded_image.getbuffer())         
         # st.success("Saved File")
@@ -160,7 +162,7 @@ if 'app_input' not in st.session_state:
 
 # the right side of the page
 with col1:
-
+    st.subheader('Upload prescription')
     #define the upload widget
     uploaded_file = st.file_uploader("Upload image of prescription", type=["jpg", "jpeg", "png"])
     save_image(uploaded_file)
@@ -187,22 +189,27 @@ with col1:
 # app_input = st.session_state['app_input']
 
 with col2:
-
+    st.subheader('Analysis result')
     custom_bg = """
     <style>
-    .st-emotion-cache-16h9saz {background-color: #0F67B1; height: 250px;}
+    .st-emotion-cache-16h9saz {background-color: #0F67B1; min-height: 250px;}
     </style>
     """
     st.markdown(custom_bg, unsafe_allow_html=True)
     with st.container(border=True):
         with st.chat_message(name="ai", avatar=Image.open('assistance_avatar.png')):
-            st.write("Hello I am a medical assistant tasked with evaluating prescription. How can I help you today.")
+            st.write("Hello I am a medical assistant tasked with evaluating prescription. Here is my analysis result of the presciption you provided.")
+            with open("tempDir/text_349.json", 'r', encoding='utf-8') as f:
+                analysis = json.load(f)
+            st.markdown(analysis['output'], unsafe_allow_html=True)
             text_1 = 'Inappropriate'
             text_2 = 'Appropriate'
-            s1 = f"<p style='font-size:25px; color:red;'>{text_1}</p>"
-            s2 = f"<p style='font-size:25px; color:#1ae5ad;'>{text_2}</p>"
+            s1 = f"<p style='font-size:18px;'>Conclusion:   <span style='color:red;'> {text_1}</span></p>"
+            s2 = f"<p style='font-size:18px;'>Conclusion:   <span style='color:#1ae5ad;'>   {text_2}</span></p>"
             st.markdown(s1, unsafe_allow_html=True)
-            st.markdown(s2, unsafe_allow_html=True)
+            
+
+
 
 
 
