@@ -48,10 +48,11 @@ def save_image(uploaded_image):
         file_details = {"FileName":uploaded_image.name,"FileType":uploaded_image.type}
         st.write(file_details['FileName'])
         img = load_image(uploaded_image)
-        st.image(img, width=250)
+        st.image(img, use_column_width=True)
         with open(os.path.join("tempDir",uploaded_image.name),"wb") as f: 
             f.write(uploaded_image.getbuffer())         
-        st.success("Saved File")
+        # st.success("Saved File")
+        st.success('File uploaded!', icon="✅")
 
 # ------------------ Streamlit UI Configuration ------------------ #
 
@@ -165,12 +166,13 @@ with col1:
     save_image(uploaded_file)
 
     # Use text_area with the session state value and update the session state on change
-    app_input = st.text_area(
-        label="Describe the prescription to be evaluate",
-        value=st.session_state['app_input'],
-        key="app_input_widget",
-        help="Provide additional detailes of the prescription, including the purpose of the drugs, how it is related to the patient, and any other relevant information.",
-    )
+    # app_input = st.text_area(
+    #     label="Describe the prescription to be evaluate",
+    #     value=st.session_state['app_input'],
+    #     key="app_input_widget",
+    #     help="Provide additional detailes of the prescription, including the purpose of the drugs, how it is related to the patient, and any other relevant information.",
+    # )
+
     # # Update session state only if the text area content has changed
     # if app_input != st.session_state['app_input']:
     #     st.session_state['app_input'] = app_input
@@ -182,40 +184,25 @@ with col1:
     #     st.session_state['app_input'] = app_input
 
 # Ensure app_input is always up to date in the session state
-app_input = st.session_state['app_input']
+# app_input = st.session_state['app_input']
 
-# with divider:
-#     st.html(
-#             '''
-#                 <div class="divider-vertical-line"></div>
-#                 <style>
-#                     .divider-vertical-line {
-#                         border-left: 2px solid #bfd7ed;
-#                         height: 320px;
-#                         margin: 0px 0px 0px 24px;
-#                     }
-#                 </style>
-#             '''
-#         )
-
-# the left side of the page
 with col2:
-    # with st.form("my_form"):
-    #     text = st.text_area(label="Prescription:")
-    #     submitted = st.form_submit_button("Submit")
-    #     if submitted:
-    #         query_response(text)
-    #[class="st-emotion-cache-fk0dee e1f1d6gn0"]
+
     custom_bg = """
     <style>
-    .st-emotion-cache-fk0dee {background-color: #0074b7; height: 250px;}
+    .st-emotion-cache-16h9saz {background-color: #0F67B1; height: 250px;}
     </style>
     """
     st.markdown(custom_bg, unsafe_allow_html=True)
     with st.container(border=True):
         with st.chat_message(name="ai", avatar=Image.open('assistance_avatar.png')):
             st.write("Hello I am a medical assistant tasked with evaluating prescription. How can I help you today.")
-            st.write("Hello I am a medical assistant tasked with evaluating prescription. How can I help you today.")
+            text_1 = 'Inappropriate'
+            text_2 = 'Appropriate'
+            s1 = f"<p style='font-size:25px; color:red;'>{text_1}</p>"
+            s2 = f"<p style='font-size:25px; color:#1ae5ad;'>{text_2}</p>"
+            st.markdown(s1, unsafe_allow_html=True)
+            st.markdown(s2, unsafe_allow_html=True)
 
 
 
