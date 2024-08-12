@@ -53,6 +53,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+custom_font = """
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+    body, h1, h2, h3, p {
+        font-family: 'Poppins' !important; font-size: 20px;
+    }
+    </style>
+    """
+st.markdown(custom_font, unsafe_allow_html=True)
+
+
 # ------------------ Sidebar ------------------ #
 
 # st.sidebar.image("logo.png")
@@ -150,8 +161,7 @@ if 'app_input' not in st.session_state:
 # the right side of the page
 with col1:
     fe.upload_image.render_ele()
-
-
+# the left side of the page
 with col2:
     fe.analysis_result.render_ele()
             

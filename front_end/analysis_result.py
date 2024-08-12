@@ -1,6 +1,8 @@
 import streamlit as st
 import json
+import os
 from PIL import Image
+from setting import IMAGE_RESOURCE_PATH
 
 def render_ele():
     st.subheader('Analysis result')
@@ -11,7 +13,7 @@ def render_ele():
     """
     st.markdown(custom_bg, unsafe_allow_html=True)
     with st.container(border=True):
-        with st.chat_message(name="ai", avatar=Image.open('assistance_avatar.png')):
+        with st.chat_message(name="ai", avatar=Image.open(os.path.join(IMAGE_RESOURCE_PATH, 'chatbot.png'))):
             st.write("Hello I am a medical assistant tasked with evaluating prescription. Here is my analysis result of the presciption you provided.")
             with open("tempDir/text_349.json", 'r', encoding='utf-8') as f:
                 analysis = json.load(f)

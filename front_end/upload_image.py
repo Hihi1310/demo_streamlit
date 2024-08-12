@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from setting import UPLOAD_FOLDER
 from PIL import Image, ImageFile
 
 # ------------------ Private Functions ------------------ #
@@ -24,7 +25,7 @@ def _save_image() -> None:
         img = _load_image(uploaded_image)
         
         # Save file and show image
-        with open(os.path.join("tempDir",uploaded_image.name),"wb") as f: 
+        with open(os.path.join(UPLOAD_FOLDER, uploaded_image.name),"wb") as f: 
             f.write(uploaded_image.getbuffer())
             _render_image(img)         
         st.success('File uploaded!', icon="✅")
