@@ -1,10 +1,13 @@
+# Base package
 import os
 import base64
 import json
 import time
 import streamlit as st
-import streamlit.components.v1 as components
 from PIL import Image
+
+# Custom package
+import front_end as fe
 
 # ------------------ Helper Functions ------------------ #
 
@@ -39,22 +42,6 @@ def query_response(prescription: str):
 
     timed_response = format_response(response, time_excecution)
     st.info(timed_response)
-
-@st.cache_resource(show_spinner=False)
-def load_image(image_file):
-    img = Image.open(image_file)
-    return img
-
-def save_image(uploaded_image):
-    if uploaded_image is not None:
-        file_details = {"FileName":uploaded_image.name,"FileType":uploaded_image.type}
-        st.write(file_details['FileName'])
-        img = load_image(uploaded_image)
-        st.image(img, use_column_width='auto')
-        with open(os.path.join("tempDir",uploaded_image.name),"wb") as f: 
-            f.write(uploaded_image.getbuffer())         
-        # st.success("Saved File")
-        st.success('File uploaded!', icon="✅")
 
 # ------------------ Streamlit UI Configuration ------------------ #
 
@@ -162,51 +149,11 @@ if 'app_input' not in st.session_state:
 
 # the right side of the page
 with col1:
-    st.subheader('Upload prescription')
-    #define the upload widget
-    uploaded_file = st.file_uploader("Upload image of prescription", type=["jpg", "jpeg", "png"])
-    save_image(uploaded_file)
+    fe.upload_image.render_ele()
 
-    # Use text_area with the session state value and update the session state on change
-    # app_input = st.text_area(
-    #     label="Describe the prescription to be evaluate",
-    #     value=st.session_state['app_input'],
-    #     key="app_input_widget",
-    #     help="Provide additional detailes of the prescription, including the purpose of the drugs, how it is related to the patient, and any other relevant information.",
-    # )
-
-    # # Update session state only if the text area content has changed
-    # if app_input != st.session_state['app_input']:
-    #     st.session_state['app_input'] = app_input
-
-    # else:
-    #     # For other model providers or models, use the get_input() function
-    #     app_input = get_input()
-    #     # Update session state
-    #     st.session_state['app_input'] = app_input
-
-# Ensure app_input is always up to date in the session state
-# app_input = st.session_state['app_input']
 
 with col2:
-    st.subheader('Analysis result')
-    custom_bg = """
-    <style>
-    .st-emotion-cache-16h9saz {background-color: #0F67B1; min-height: 250px;}
-    </style>
-    """
-    st.markdown(custom_bg, unsafe_allow_html=True)
-    with st.container(border=True):
-        with st.chat_message(name="ai", avatar=Image.open('assistance_avatar.png')):
-            st.write("Hello I am a medical assistant tasked with evaluating prescription. Here is my analysis result of the presciption you provided.")
-            with open("tempDir/text_349.json", 'r', encoding='utf-8') as f:
-                analysis = json.load(f)
-            st.markdown(analysis['output'], unsafe_allow_html=True)
-            text_1 = 'Inappropriate'
-            text_2 = 'Appropriate'
-            s1 = f"<p style='font-size:18px;'>Conclusion:   <span style='color:red;'> {text_1}</span></p>"
-            s2 = f"<p style='font-size:18px;'>Conclusion:   <span style='color:#1ae5ad;'>   {text_2}</span></p>"
-            st.markdown(s1, unsafe_allow_html=True)
+    fe.analysis_result.render_ele()
             
 
 
