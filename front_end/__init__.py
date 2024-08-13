@@ -1,1 +1,1 @@
-from . import analysis_result, upload_image
+from . import analysis_result, upload_image, side_bar

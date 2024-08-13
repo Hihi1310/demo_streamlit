@@ -2,13 +2,13 @@ import streamlit as st
 import json
 import os
 from PIL import Image
-from setting import IMAGE_RESOURCE_PATH
+from setting import IMAGE_RESOURCE_PATH, THEME_CONFIG
 
 def render_ele():
     st.subheader('Analysis result')
-    custom_bg = """
+    custom_bg = f"""
     <style>
-    .st-emotion-cache-16h9saz {background-color: #0F67B1; min-height: 250px;}
+        .st-emotion-cache-163oi9g {{background-color: {THEME_CONFIG['secondaryBackgroundColor']}; min-height: 250px;}}
     </style>
     """
     st.markdown(custom_bg, unsafe_allow_html=True)
