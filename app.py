@@ -102,6 +102,10 @@ custom_css = """
             font-size: 32px;
             font-weight: bolder;
         }
+        
+        [data-testid="stHeader"]{
+            visibility: hidden;
+        }
     </style>
     """ % bin_str
 st.markdown(custom_css, unsafe_allow_html=True)
